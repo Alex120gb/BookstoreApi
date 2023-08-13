@@ -1,83 +1,87 @@
-﻿using AutoMapper;
-using AutoMapper.QueryableExtensions;
-using BookstoreApi.Models;
+﻿using Azure.Core;
+using BookstoreApi.Controllers;
+using BookstoreApi.Repositories.Interface;
 using BookstoreApi.Services.Interfaces;
-using BookstoreApi.TableDbContext;
 using BookstoreApi.ViewModels;
-using Microsoft.EntityFrameworkCore;
 
 namespace BookstoreApi.Services
 {
     public class BooksService : IBooksService
     {
-        private readonly BookDbContext _context;
-        private readonly IMapper _mapper;
+        private readonly ILogger<BooksService> _logger;
+        private readonly IBookRepositories _bookRepositories;
 
-        public BooksService(BookDbContext context, IMapper mapper)
+        public BooksService(IBookRepositories bookRepositories, ILogger<BooksService> logger)
         {
-            _context = context;
-            _mapper = mapper;
+            _bookRepositories = bookRepositories;
+            _logger = logger;
         }
 
         public async Task<List<GetUpdateBooksModel>> GetBooks()
         {
-            var books = await _context.Books
-                .ProjectTo<GetUpdateBooksModel>(_mapper.ConfigurationProvider)
-                .ToListAsync();
-
-            return books;
+            try
+            {
+                return await _bookRepositories.GetBooks();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "There was an error during GetBooks");
+                return null;
+            }
         }
 
         public async Task<Response<int>> AddBooks(AddBooksModel request)
         {
-            if (request == null)
+            try
             {
-                return new Response<int>() { IsSuccessful = false, Value = 0};
+                return await _bookRepositories.AddBooks(request);
             }
-
-            if (_context.BookExists(request.Title))
+            catch (Exception ex)
             {
-                return new Response<int>() { IsSuccessful = false, Value = 0, Message = "Book with same title already exists" };
+                _logger.LogError(ex, "There was an error during AddBooks");
+                return new Response<int>()
+                {
+                    IsSuccessful = false,
+                    Value = 0,
+                    Message = "There was an error during AddBooks"
+                };
             }
-
-            var mapedBooks = _mapper.Map<Book>(request);
-            _context.Books.Add(mapedBooks);
-            var result = await _context.SaveChangesAsync();
-
-            return new Response<int>() { IsSuccessful = true, Value = result, Message = "Book successfully added" };
         }
 
         public async Task<Response<int>> UpdateBook(GetUpdateBooksModel request)
         {
-            if (request.Id < 0 || request == null)
+            try
             {
-                return new Response<int>() { IsSuccessful = false, Value = 0 };
+                return await _bookRepositories.UpdateBook(request);
             }
-
-            var bookExists = _context.Books.Find(request.Id);
-            if(bookExists == null)
+            catch (Exception ex)
             {
-                return new Response<int>() { IsSuccessful = false, Value = 0, Message = "Book does not exist" };
+                _logger.LogError(ex, "There was an error during UpdateBook");
+                return new Response<int>()
+                {
+                    IsSuccessful = false,
+                    Value = 0,
+                    Message = "There was an error during UpdateBook"
+                };
             }
-
-            _mapper.Map(request, bookExists);
-            var result = await _context.SaveChangesAsync();
-
-            return new Response<int>() { IsSuccessful = true, Value = result, Message = "Book successfully updated" };
         }
 
         public async Task<Response<int>> DeleteBook(int id)
         {
-            var bookForDeletion = _context.Books.Find(id);
-            if (bookForDeletion == null)
+            try
             {
-                return new Response<int>() { IsSuccessful = false, Value = 0, Message = "Book does not exist" };
+                return await _bookRepositories.DeleteBook(id);
             }
-
-            _context.Books.Remove(bookForDeletion);
-            var result = await _context.SaveChangesAsync();
-
-            return new Response<int>() { IsSuccessful = true, Value = result, Message = "Book successfully deleted" };
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "There was an error during DeleteBook");
+                return new Response<int>()
+                {
+                    IsSuccessful = false,
+                    Value = 0,
+                    Message = "There was an error during DeleteBook"
+                };
+            }
         }
     }
 }

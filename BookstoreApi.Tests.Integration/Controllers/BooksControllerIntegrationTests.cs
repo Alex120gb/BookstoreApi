@@ -1,7 +1,4 @@
-﻿using BookstoreApi.Common;
-using BookstoreApi.ViewModels;
-using Microsoft.AspNetCore.Mvc.Testing;
-using Microsoft.Extensions.Configuration;
+﻿using BookstoreApi.ViewModels;
 using System.Net.Http.Headers;
 using System.Net.Http.Json;
 
@@ -10,16 +7,17 @@ namespace BookstoreApi.Tests.Integration.Controllers
     [TestFixture]
     public class BooksControllerIntegrationTests
     {
-        private HttpClient _client;
+        private HttpClient _httpClient;
         private MockJwtTokenGenerator _jwtTokenGenerator;
         private string _validJwtToken;
 
         [OneTimeSetUp]
         public void Setup()
         {
-            var appFactory = new WebApplicationFactory<Startup>();
-
-            _client = appFactory.CreateClient();
+            _httpClient = new HttpClient
+            {
+                BaseAddress = new Uri("http://localhost:8080") // Update with your API's host and port
+            };
 
             _jwtTokenGenerator = new MockJwtTokenGenerator();
             _validJwtToken = _jwtTokenGenerator.GenerateJwtToken("TestUser");
@@ -29,10 +27,10 @@ namespace BookstoreApi.Tests.Integration.Controllers
         public async Task Books_ReturnsSuccessStatusCode()
         {
             // Arrange
-            _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _validJwtToken);
+            _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _validJwtToken);
 
             // Act
-            var response = await _client.GetAsync("/BooksApi/GetAllBooks");
+            var response = await _httpClient.GetAsync("/BooksApi/GetAllBooks");
 
             // Assert
             response.EnsureSuccessStatusCode();
@@ -46,7 +44,7 @@ namespace BookstoreApi.Tests.Integration.Controllers
         public async Task Books_ReturnsFailUnauthorized()
         {
             // Arrange & Act
-            var response = await _client.GetAsync("/BooksApi/GetAllBooks");
+            var response = await _httpClient.GetAsync("/BooksApi/GetAllBooks");
 
             // Assert
             Assert.That(response.StatusCode, Is.EqualTo(System.Net.HttpStatusCode.Unauthorized));
@@ -56,7 +54,7 @@ namespace BookstoreApi.Tests.Integration.Controllers
         public async Task AddBooks_ReturnsCreatedStatusCode()
         {
             // Arrange
-            _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _validJwtToken);
+            _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _validJwtToken);
             // Remember to change
             // the title for every new test run
             var newBook = new AddBooksModel() 
@@ -68,7 +66,7 @@ namespace BookstoreApi.Tests.Integration.Controllers
             };
 
             // Act
-            var response = await _client.PostAsJsonAsync("/BooksApi/AddBook", newBook);
+            var response = await _httpClient.PostAsJsonAsync("/BooksApi/AddBook", newBook);
 
             // Assert
             response.EnsureSuccessStatusCode();
@@ -86,7 +84,7 @@ namespace BookstoreApi.Tests.Integration.Controllers
             var newBook = new AddBooksModel();
 
             // Act
-            var response = await _client.PostAsJsonAsync("/BooksApi/AddBook", newBook);
+            var response = await _httpClient.PostAsJsonAsync("/BooksApi/AddBook", newBook);
 
             // Assert
             Assert.That(response.StatusCode, Is.EqualTo(System.Net.HttpStatusCode.Unauthorized));
@@ -96,7 +94,7 @@ namespace BookstoreApi.Tests.Integration.Controllers
         public async Task UpdateBook_ReturnsUpdatedStatusCode()
         {
             // Arrange
-            _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _validJwtToken);
+            _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _validJwtToken);
             var updateBook = new GetUpdateBooksModel()
             {
                 Id = 54,
@@ -107,7 +105,7 @@ namespace BookstoreApi.Tests.Integration.Controllers
             };
 
             // Act
-            var response = await _client.PutAsJsonAsync("/BooksApi/UpdateExistingBook", updateBook);
+            var response = await _httpClient.PutAsJsonAsync("/BooksApi/UpdateExistingBook", updateBook);
 
             // Assert
             response.EnsureSuccessStatusCode();
@@ -125,7 +123,7 @@ namespace BookstoreApi.Tests.Integration.Controllers
             var updateBook = new GetUpdateBooksModel();
 
             // Act
-            var response = await _client.PutAsJsonAsync("/BooksApi/UpdateExistingBook", updateBook);
+            var response = await _httpClient.PutAsJsonAsync("/BooksApi/UpdateExistingBook", updateBook);
 
             // Assert
             Assert.That(response.StatusCode, Is.EqualTo(System.Net.HttpStatusCode.Unauthorized));
@@ -135,11 +133,11 @@ namespace BookstoreApi.Tests.Integration.Controllers
         public async Task DeleteBook_ReturnsDeletedStatusCode()
         {
             // Arrange
-            _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _validJwtToken);
+            _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _validJwtToken);
             var deleteBook = 55;
 
             // Act
-            var response = await _client.DeleteAsync("/BooksApi/DeleteExistingBook/" + deleteBook);
+            var response = await _httpClient.DeleteAsync("/BooksApi/DeleteExistingBook/" + deleteBook);
 
             // Assert
             response.EnsureSuccessStatusCode();
@@ -157,7 +155,7 @@ namespace BookstoreApi.Tests.Integration.Controllers
             var deleteBook = 55;
 
             // Act
-            var response = await _client.DeleteAsync("/BooksApi/DeleteExistingBook/" + deleteBook);
+            var response = await _httpClient.DeleteAsync("/BooksApi/DeleteExistingBook/" + deleteBook);
 
             // Assert
             Assert.That(response.StatusCode, Is.EqualTo(System.Net.HttpStatusCode.Unauthorized));

@@ -1,71 +1,55 @@
-﻿using AutoMapper;
-using BookstoreApi.Common;
-using BookstoreApi.Models;
+﻿using BookstoreApi.Repositories;
+using BookstoreApi.Repositories.Interface;
 using BookstoreApi.Services.Interfaces;
-using BookstoreApi.TableDbContext;
 using BookstoreApi.ViewModels;
 
 namespace BookstoreApi.Services
 {
     public class UsersService : IUserService
     {
-        private readonly UserDbContext _context;
-        private readonly IMapper _mapper;
-        private readonly IAuthService _authService;
-        private readonly IJwtTokenGeneratorService _jwtTokenGeneratorService;
-        private readonly IHttpContextAccessor _httpContextAccessor;
+        private readonly ILogger<UsersService> _logger;
+        private readonly IUserRepositories _userRepositories;
 
-        public UsersService(UserDbContext context, 
-                            IMapper mapper, 
-                            IAuthService authService,
-                            IJwtTokenGeneratorService jwtTokenGeneratorService,
-                            IHttpContextAccessor httpContextAccessor)
+        public UsersService(IUserRepositories userRepositories, ILogger<UsersService> logger)
         {
-            _context = context;
-            _mapper = mapper;
-            _authService = authService;
-            _jwtTokenGeneratorService = jwtTokenGeneratorService;
-            _httpContextAccessor = httpContextAccessor;
+            _userRepositories = userRepositories;
+            _logger = logger;
         }
 
         public async Task<Response<int>> RegisterUser(RegisterUserModel request)
         {
-            if (request == null)
+            try
             {
-                return new Response<int>() { IsSuccessful = false, Value = 0 };
+                return await _userRepositories.RegisterUser(request);
             }
-
-            if (_context.UsernameExists(request.Username))
+            catch (Exception ex)
             {
-                return new Response<int>() { IsSuccessful = false, Value = 0, Message = "User with same username already exists" };
+                _logger.LogError(ex, "There was an error during RegisterUser");
+                return new Response<int>()
+                {
+                    IsSuccessful = false,
+                    Value = 0,
+                    Message = "There was an error during RegisterUser"
+                };
             }
-
-            request.Password = PasswordHasher.HashPassword(request.Password);
-            var mapedUser = _mapper.Map<User>(request);
-
-            _context.Users.Add(mapedUser);
-
-            var result = await _context.SaveChangesAsync();
-
-            return new Response<int>() { IsSuccessful = true, Value = result, Message = "User successfully registered" };
         }
 
         public async Task<Response<string>> Login(LoginRequestModel request)
         {
-            if (request == null)
+            try
             {
-                return new Response<string>() { IsSuccessful = false, Value = null };
+                return await _userRepositories.Login(request);
             }
-
-            var isAuthenticated = await _authService.AuthenticateUser(request.Username, request.Password);
-            if(isAuthenticated)
+            catch (Exception ex)
             {
-                var token = _jwtTokenGeneratorService.GenerateJwtTokentest(request.Username);
-                _httpContextAccessor.HttpContext.Response.Headers.Add("Authorization", "Bearer " + token);
-                return new Response<string>() { IsSuccessful = true, Value = token, Message = "User successfully logged in" };
+                _logger.LogError(ex, "There was an error during Login");
+                return new Response<string>()
+                {
+                    IsSuccessful = false,
+                    Value = "",
+                    Message = "There was an error during Login"
+                };
             }
-
-            return new Response<string>() { IsSuccessful = false, Value = null, Message = "Invalid credentials. Please try again." };
         }
     }
 }

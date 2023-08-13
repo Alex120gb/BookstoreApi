@@ -21,12 +21,16 @@ namespace BookstoreApi.Controllers
         [HttpPost("RegisterUser")]
         public async Task<Response<int>> RegisterUser(RegisterUserModel request)
         {
+            _logger.LogInformation("RegisterUser method was called");
+
             return await _userService.RegisterUser(request);
         }
 
         [HttpPost("UserLogin")]
         public async Task<Response<string>> Login(LoginRequestModel request)
         {
+            _logger.LogInformation("Login method was called");
+
             return await _userService.Login(request);
         }
     }

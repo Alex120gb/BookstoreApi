@@ -1,27 +1,20 @@
-﻿using BookstoreApi.Common;
-using BookstoreApi.ViewModels;
-using Microsoft.AspNetCore.Mvc.Testing;
-using Microsoft.Extensions.Configuration;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net.Http.Headers;
+﻿using BookstoreApi.ViewModels;
 using System.Net.Http.Json;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace BookstoreApi.Tests.Integration.Controllers
 {
     [TestFixture]
     public class UsersControllerIntegrationTests
     {
-        private HttpClient _client;
+        private HttpClient _httpClient;
 
         [OneTimeSetUp]
         public void Setup()
         {
-            var appFactory = new WebApplicationFactory<Startup>();
-            _client = appFactory.CreateClient();
+            _httpClient = new HttpClient
+            {
+                BaseAddress = new Uri("http://localhost:8080") // Update with your API's host and port
+            };
         }
 
         [Test]
@@ -36,7 +29,7 @@ namespace BookstoreApi.Tests.Integration.Controllers
             };
 
             // Act
-            var response = await _client.PostAsJsonAsync("/UsersApi/RegisterUser", newUser);
+            var response = await _httpClient.PostAsJsonAsync("/UsersApi/RegisterUser", newUser);
 
             // Assert
             response.EnsureSuccessStatusCode();
@@ -45,6 +38,29 @@ namespace BookstoreApi.Tests.Integration.Controllers
             var newUserResponse = await response.Content.ReadFromJsonAsync<Response<int>>();
             Assert.NotNull(newUserResponse);
             Assert.IsTrue(newUserResponse.IsSuccessful == true);
+        }
+
+        [Test]
+        public async Task RegisterUser_ReturnsFail_UserExists()
+        {
+            // Arrange
+            var newUser = new RegisterUserModel()
+            {
+                Username = "IntegrationTest",
+                Password = "password1234",
+                Email = "some@email"
+            };
+
+            // Act
+            var response = await _httpClient.PostAsJsonAsync("/UsersApi/RegisterUser", newUser);
+
+            // Assert
+            response.EnsureSuccessStatusCode();
+            Assert.That(response.StatusCode, Is.EqualTo(System.Net.HttpStatusCode.OK));
+
+            var newUserResponse = await response.Content.ReadFromJsonAsync<Response<int>>();
+            Assert.NotNull(newUserResponse);
+            Assert.IsTrue(newUserResponse.IsSuccessful == false);
         }
 
         [Test]
@@ -58,7 +74,7 @@ namespace BookstoreApi.Tests.Integration.Controllers
             };
 
             // Act
-            var response = await _client.PostAsJsonAsync("/UsersApi/UserLogin", loginUser);
+            var response = await _httpClient.PostAsJsonAsync("/UsersApi/UserLogin", loginUser);
 
             // Assert
             response.EnsureSuccessStatusCode();
@@ -67,6 +83,28 @@ namespace BookstoreApi.Tests.Integration.Controllers
             var loginUserResponse = await response.Content.ReadFromJsonAsync<Response<string>>();
             Assert.NotNull(loginUserResponse);
             Assert.IsTrue(loginUserResponse.IsSuccessful == true);
+        }
+
+        [Test]
+        public async Task Login_ReturnsFail_InvalidCreds()
+        {
+            // Arrange
+            var loginUser = new LoginRequestModel()
+            {
+                Username = "IntegrationTest-wrong",
+                Password = "666666666666666666"
+            };
+
+            // Act
+            var response = await _httpClient.PostAsJsonAsync("/UsersApi/UserLogin", loginUser);
+
+            // Assert
+            response.EnsureSuccessStatusCode();
+            Assert.That(response.StatusCode, Is.EqualTo(System.Net.HttpStatusCode.OK));
+
+            var loginUserResponse = await response.Content.ReadFromJsonAsync<Response<string>>();
+            Assert.NotNull(loginUserResponse);
+            Assert.IsTrue(loginUserResponse.IsSuccessful == false);
         }
     }
 }
