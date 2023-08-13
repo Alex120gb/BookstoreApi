@@ -6,17 +6,17 @@ namespace BookstoreApi.Services
     public class AuthService : IAuthService
     {
         private readonly IConfiguration _configuration;
-        private readonly IUserRepositories _userRepositories;
+        private readonly IAuthUserRepositories _authUserRepositories;
 
-        public AuthService(IConfiguration configuration, IUserRepositories userRepositories)
+        public AuthService(IConfiguration configuration, IAuthUserRepositories authUserRepositories)
         {
             _configuration = configuration;
-            _userRepositories = userRepositories;
+            _authUserRepositories = authUserRepositories;
         }
 
         public async Task<bool> AuthenticateUser(string username, string password)
         {
-            return await _userRepositories.CorrectUser(username, password);
+            return await _authUserRepositories.CorrectUser(username, password);
         }
     }
 }

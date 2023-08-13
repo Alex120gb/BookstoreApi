@@ -69,12 +69,5 @@ namespace BookstoreApi.Repositories
 
             return new Response<string>() { IsSuccessful = false, Value = null, Message = "Invalid credentials. Please try again." };
         }
-
-        public async Task<bool> CorrectUser(string username, string password)
-        {
-            string hashedPassword = PasswordHasher.HashPassword(password);
-
-            return await _context.Users.AnyAsync(u => u.Username == username && u.Password == hashedPassword);
-        }
     }
 }

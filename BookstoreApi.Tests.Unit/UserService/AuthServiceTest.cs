@@ -6,17 +6,17 @@ namespace BookstoreApi.Tests.Unit.UserService
 {
     public class AuthServiceTest
     {
-        private Mock<IUserRepositories> _userRepositories;
+        private Mock<IAuthUserRepositories> _authUserRepositories;
         private Mock<Microsoft.Extensions.Configuration.IConfiguration> _configuration;
         private AuthService _sut;
 
         [SetUp]
         public void init()
         {
-            _userRepositories = new Mock<IUserRepositories>();
+            _authUserRepositories = new Mock<IAuthUserRepositories>();
             _configuration = new Mock<Microsoft.Extensions.Configuration.IConfiguration>();
 
-            _sut = new AuthService(_configuration.Object, _userRepositories.Object);
+            _sut = new AuthService(_configuration.Object, _authUserRepositories.Object);
         }
 
         [Test]
@@ -24,7 +24,7 @@ namespace BookstoreApi.Tests.Unit.UserService
         {
             // Arrange
             var response = new Response<int>() { IsSuccessful = true };
-            _userRepositories.Setup(x => x.CorrectUser(It.IsAny<string>(), It.IsAny<string>()))
+            _authUserRepositories.Setup(x => x.CorrectUser(It.IsAny<string>(), It.IsAny<string>()))
                 .ReturnsAsync(true)
                 .Verifiable();
 
@@ -40,7 +40,7 @@ namespace BookstoreApi.Tests.Unit.UserService
         public void AuthenticateUser_Throw_Exception()
         {
             // Arrange
-            _userRepositories.Setup(x => x.CorrectUser(It.IsAny<string>(), It.IsAny<string>()))
+            _authUserRepositories.Setup(x => x.CorrectUser(It.IsAny<string>(), It.IsAny<string>()))
                 .ThrowsAsync(new Exception());
 
             // Act

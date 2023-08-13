@@ -41,6 +41,7 @@ namespace BookstoreApi
             services.AddScoped<IBookRepositories, BookRepositories>();
             services.AddScoped<IUserRepositories, UserRepositories>();
             services.AddScoped<IAuthService, AuthService>();
+            services.AddScoped<IAuthUserRepositories, AuthUserRepositories>();
 
             var dbHost = Environment.GetEnvironmentVariable("DB_HOST");
             var dbName = Environment.GetEnvironmentVariable("DB_NAME");

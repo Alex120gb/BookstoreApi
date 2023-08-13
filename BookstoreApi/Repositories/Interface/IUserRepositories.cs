@@ -6,6 +6,5 @@ namespace BookstoreApi.Repositories.Interface
     {
         Task<Response<int>> RegisterUser(RegisterUserModel request);
         Task<Response<string>> Login(LoginRequestModel request);
-        Task<bool> CorrectUser(string username, string password);
     }
 }
