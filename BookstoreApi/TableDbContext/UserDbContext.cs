@@ -13,7 +13,11 @@ namespace BookstoreApi.TableDbContext
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlServer("Server=127.0.0.1,1433;Database=Bookstore;User=sa;Password=B@@k2toR3S3rVer;TrustServerCertificate=true;");
+            var dbHost = Environment.GetEnvironmentVariable("DB_HOST");
+            var dbName = Environment.GetEnvironmentVariable("DB_NAME");
+            var dbPassword = Environment.GetEnvironmentVariable("DB_SA_PASSWORD");
+            var connectionString = $"Data Source={dbHost};Initial Catalog={dbName};User=sa;Password={dbPassword};TrustServerCertificate=true;";
+            optionsBuilder.UseSqlServer(connectionString);
         }
 
         public bool UsernameExists(string username)

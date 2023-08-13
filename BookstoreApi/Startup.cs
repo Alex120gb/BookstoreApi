@@ -24,6 +24,7 @@ namespace BookstoreApi
 
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddHealthChecks();
             services.AddHttpClient();
             services.AddControllers();
             services.AddHttpContextAccessor();
@@ -34,10 +35,14 @@ namespace BookstoreApi
             services.AddScoped<IBooksService, BooksService>();
             services.AddScoped<IUserService, UsersService>();
             services.AddScoped<IAuthService, AuthService>();
-            services.AddDbContext<BookDbContext>(options =>
-                    options.UseSqlServer("Server=127.0.0.1,1433;Database=Bookstore;User=sa;Password=B@@k2toR3S3rVer;TrustServerCertificate=true;"));
-            services.AddDbContext<UserDbContext>(options =>
-                    options.UseSqlServer("Server=127.0.0.1,1433;Database=Bookstore;User=sa;Password=B@@k2toR3S3rVer;TrustServerCertificate=true;"));
+
+            // Server=127.0.0.1,1433;Database=Bookstore;User=sa;Password=B@@k2toR3S3rVer;TrustServerCertificate=true;
+            var dbHost = Environment.GetEnvironmentVariable("DB_HOST");
+            var dbName = Environment.GetEnvironmentVariable("DB_NAME");
+            var dbPassword = Environment.GetEnvironmentVariable("DB_SA_PASSWORD");
+            var connectionString = $"Data Source={dbHost};Initial Catalog={dbName};User=sa;Password={dbPassword};TrustServerCertificate=true;";
+            services.AddDbContext<BookDbContext>(options => options.UseSqlServer(connectionString));
+            services.AddDbContext<UserDbContext>(options => options.UseSqlServer(connectionString));
 
             var mapperConfig = new MapperConfiguration(cfg =>
             {
@@ -111,6 +116,7 @@ namespace BookstoreApi
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
+                endpoints.MapHealthChecks("/health");
             });
         }
     }
