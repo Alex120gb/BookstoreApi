@@ -1,5 +1,4 @@
-﻿using BookstoreApi.Repositories;
-using BookstoreApi.Repositories.Interface;
+﻿using BookstoreApi.Repositories.Interface;
 using BookstoreApi.Services.Interfaces;
 using BookstoreApi.ViewModels;
 
