@@ -14,7 +14,7 @@ Location for docker-compose and sql script:
 Once you downloaded/pulled the two docker repositoires, open up a command window and go to where you have stored in your machine the docker-compose file (yes you can move the file somewhere more convinient for you) - once you are in the directory with the docker-compose file just run this command: docker-compose up
 With this the compose container will be created - after that initialize the database SQL Server and you should be good to go!
 
-Note: Remember to use dbForge database managing tool for the SQL Server to use the scrpit:
+Note: Remember to use dbForge database managing tool (or anyother that can connect to an SQL Server) for the SQL Server to use the scrpit:
 ![image](https://github.com/Alex120gb/BookstoreApi/assets/93439743/45ca098e-11f4-4270-adf7-e71bdb875741)
 
 The password in the image is as follows - B@@k2toR3S3rVer - this is also what the docker-compose file initilazes!
