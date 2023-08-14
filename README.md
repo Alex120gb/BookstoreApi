@@ -12,6 +12,7 @@ Location for docker-compose and sql script:
 2) Docker-compose.yml location: Docker_compose_file in the main direcotry of BookstoreApi project
 
 Once you downloaded/pulled the two docker repositories, open up a command window and go to where you have stored in your machine the docker-compose file (yes you can move the file somewhere more convinient for you) - once you are in the directory with the docker-compose file just run this command: docker-compose up
+
 With this the compose container will be created - after that initialize the database SQL Server and you should be good to go!
 
 Note: Remember to use dbForge database managing tool (or anyother that can connect to an SQL Server) for the SQL Server to use the scrpit:
