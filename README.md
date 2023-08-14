@@ -2,7 +2,9 @@
 This is the API project of the bookstore project.
 
 To use it you have to consider a few things:
-For either case, either local or with the docker-compose file that I will provide within this repository, after running the compose file (pretty much needed for the SQL Server) you will also need to create the database - I will provide an sql script which not only contains the creation of the database, but of course also the tables AND some data to use!
+For either case, either local or with the docker-compose file that I will provide within this repository, after running the compose file (pretty much needed for the SQL Server) you will also need to create the database - I have added in the project an sql script which not only contains the creation of the database, but of course also the tables AND some data to use!
+1) Sql script location: Database_setup_script in the main direcotry of BookstoreApi project
+2) Docker-compose.yml location: Docker_compose_file in the main direcotry of BookstoreApi project
 
 Also before running the docker you will have to download my two repositories from docker 
 1) Api: docker pull alexisk120/bookapi
