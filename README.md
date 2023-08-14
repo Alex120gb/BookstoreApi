@@ -23,7 +23,7 @@ The password in the image is as follows - B@@k2toR3S3rVer - this is also what th
 -------------------------------------------------------------------------------------------------------------------------------------------
 
 If you want to use this locally, you still need to create the database, again use the docker-compose file, and stop the other two containers (webapp and api - not really needed) and leave the SQL Server container running. Again you will have to fill up the database with the database, its tables and data.
-Remember to change the connection string in the startup to the one I provided in comments so that your local api can communicate with the SQL Server created with the use of docker!
+Just Remember to change the connection string in the startup to the one I provided in comments so that your local api can communicate with the SQL Server created with the use of docker!
 
 Here is again the connection string: Server=127.0.0.1,1433;Database=Bookstore;User=sa;Password=B@@k2toR3S3rVer;TrustServerCertificate=true;
 
