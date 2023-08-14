@@ -31,6 +31,7 @@ Once you set it up as I mentioned above, one thing that you can do is after clic
 try the /health endpoint to see if the api is healthy or not!
 
 Here is an example: 
+
 ![image](https://github.com/Alex120gb/BookstoreApi/assets/93439743/324a242c-9153-4927-9931-99ee7053149e)
 
 After the the health check - or if you didn't which is fine write on the url after the localhost:8080 - type in the /swagger so that the swagger interface appears - once you open that interface to use the api you first need to generate a token to authenticate! To generate a token, simply use the login endpoint (if you have no account then of course
