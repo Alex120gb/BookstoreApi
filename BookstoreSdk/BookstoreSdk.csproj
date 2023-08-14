@@ -5,7 +5,7 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <PackageId>Bookstore.Api.SDK</PackageId>
-    <Version>5.0.0</Version>
+    <Version>5.0.1</Version>
     <Authors>Alexis</Authors>
     <PackageDescription>A client library for interacting with My API.</PackageDescription>
   </PropertyGroup>

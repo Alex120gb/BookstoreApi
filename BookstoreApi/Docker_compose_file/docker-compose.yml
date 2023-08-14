@@ -1,0 +1,39 @@
+version: '3.4'
+
+networks:
+    bookstore-app:
+        driver: bridge
+
+services:
+  bookstoredb:
+    container_name: bookstore-db
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    ports:
+        - 1433:1433
+    environment:
+        - ACCEPT_EULA=Y
+        - SA_PASSWORD=B@@k2toR3S3rVer
+    networks:
+        - bookstore-app
+
+  bookstoreapi:
+    container_name: bookstore-api
+    image: alexisk120/bookapi:1.00
+    ports:
+        - 8080:80
+    depends_on:
+        - bookstoredb
+    environment:
+        - DB_HOST=bookstoredb
+        - DB_NAME=Bookstore
+        - DB_SA_PASSWORD=B@@k2toR3S3rVer
+    networks:
+        - bookstore-app
+
+  bookstorewebapp:
+    container_name: bookstore-web
+    image: alexisk120/bookwebapp:1.00
+    networks:
+        - bookstore-app
+    ports:
+        - 8070:80

@@ -43,6 +43,9 @@ namespace BookstoreApi
             services.AddScoped<IAuthService, AuthService>();
             services.AddScoped<IAuthUserRepositories, AuthUserRepositories>();
 
+            // Use the below connection string when running the api locally without docker - BUT first do run the compose file to create a database for you which you can use
+            // (MIGHT NEED TO CHANGE FROM 127.0.0.1 SERVER NAME TO localhost)
+            // Server=127.0.0.1,1433;Database=Bookstore;User=sa;Password=B@@k2toR3S3rVer;TrustServerCertificate=true;
             var dbHost = Environment.GetEnvironmentVariable("DB_HOST");
             var dbName = Environment.GetEnvironmentVariable("DB_NAME");
             var dbPassword = Environment.GetEnvironmentVariable("DB_SA_PASSWORD");
