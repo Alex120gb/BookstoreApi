@@ -12,6 +12,7 @@ Once you pull this two repositories in your docker desktop app, feel free to run
 
 Note: Remember to use dbForge database managing tool for the SQL Server to use the scrpit:
 ![image](https://github.com/Alex120gb/BookstoreApi/assets/93439743/45ca098e-11f4-4270-adf7-e71bdb875741)
+
 The password in the image is as follows - B@@k2toR3S3rVer - this is also what the docker-compose file initilazes!
 
 2) If you want to use this locally, you still need to create the database, again use the docker-compose file, and stop the other two containers (webapp and api - not really needed) and leave the server container running. Again you will have to fill up the database with the database, its tables and data.
@@ -27,6 +28,7 @@ A few more things regarding the api:
 try the /health endpoint to see if the api is healthy or not!
 
 Here is an example: 
+
 ![image](https://github.com/Alex120gb/BookstoreApi/assets/93439743/324a242c-9153-4927-9931-99ee7053149e)
 
 2) After the the health check - or if you didn't which is fine write on the url after the localhost:8080 - type in the /swagger so that the swagger interface appears - once you open that interface to use the api you first need to generate a token to authenticate! To generate a token, simply use the login endpoint (if you have no account then of course
