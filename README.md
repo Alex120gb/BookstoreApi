@@ -2,7 +2,7 @@
 This is the API project of the bookstore project.
 
 To use it you have to consider a few things:
-If you use the docker-compose file that I will provide within the BookstoreWebApp github, you will also need to create the database - I will provide an sql script which not only contains the creation of the database, but of course also the tables AND some data to use!
+For either case, either local or with the docker-compose file that I will provide within this repository, you will also need to create the database - I will provide an sql script which not only contains the creation of the database, but of course also the tables AND some data to use!
 
 Also before running the docker you will have to download my two repositories from docker 
 1) Api: docker pull alexisk120/bookapi
@@ -18,7 +18,7 @@ The password in the image is as follows - B@@k2toR3S3rVer - this is also what th
 
 -------------------------------------------------------------------------------------------------------------------------------------------
 
-If you want to use this locally, you still need to create the database, again use the docker-compose file, and stop the other two containers (webapp and api - not really needed) and leave the server container running. Again you will have to fill up the database with the database, its tables and data.
+If you want to use this locally, you still need to create the database, again use the docker-compose file, and stop the other two containers (webapp and api - not really needed) and leave the SQL Server container running. Again you will have to fill up the database with the database, its tables and data.
 Remember to change the connection string in the startup to the one I provided in comments so that your local api can communicate with the SQL Server created with the use of docker!
 
 Here is again the connection string: Server=127.0.0.1,1433;Database=Bookstore;User=sa;Password=B@@k2toR3S3rVer;TrustServerCertificate=true;
