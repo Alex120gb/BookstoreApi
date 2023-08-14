@@ -46,5 +46,5 @@ Once you generate a token, copy it and you have to do two things - first authori
 ![image](https://github.com/Alex120gb/BookstoreApi/assets/93439743/2e85d035-9bc9-4d55-9c2c-be416efa43c4)
 by pasting the token in the value input box. Then once you authorize your self, you will notice a header input box in every  books api endpoint much like this:
 ![image](https://github.com/Alex120gb/BookstoreApi/assets/93439743/3fea3877-b579-41d6-97b6-c13387c48300)
-you will also need to past the token in this header so that the api can validate with its own authorized token (the one with which you authorized yourself) BUT PLEASE DO NOT DELETE THE - Bearer - WORD IN THE HEADER INPUT - just press space once and paste the token after the Bearer - after that feel free to use the endpoint!
+you will also need to paste the token in this header so that the api can validate with its own authorized token (the one with which you authorized yourself) BUT PLEASE DO NOT DELETE THE - Bearer - WORD IN THE HEADER INPUT - just press space once and paste the token after the Bearer - after that feel free to use the endpoint!
 
