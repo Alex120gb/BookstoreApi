@@ -3,15 +3,16 @@ This is the API project of the bookstore project.
 
 To use it you have to consider a few things:
 For either case, either local or with the docker-compose file that I will provide within this repository, after running the compose file (pretty much needed for the SQL Server) you will also need to create the database - I have added in the project an sql script which not only contains the creation of the database, but of course also the tables AND some data to use!
-1) Sql script location: Database_setup_script in the main direcotry of BookstoreApi project
-2) Docker-compose.yml location: Docker_compose_file in the main direcotry of BookstoreApi project
-
-Also before running the docker you will have to download my two repositories from docker 
+Also before running the docker you will have to download my two repositories from docker (first do this!)
 1) Api: docker pull alexisk120/bookapi
 2) WebApp: docker pull alexisk120/bookwebapp
 
-Once you pull this two repositories in your docker desktop app, feel free to run the docker-compose file!
-(Again please dont forget for the data or else you will not be able to properly use the api and webapp)
+Location for docker-compose and sql script:
+1) Sql script location: Database_setup_script in the main direcotry of BookstoreApi project
+2) Docker-compose.yml location: Docker_compose_file in the main direcotry of BookstoreApi project
+
+Once you downloaded/pulled the two docker repositoires, open up a command window and go to where you have stored in your machine the docker-compose file (yes you can move the file somewhere more convinient for you) - once you are in the directory with the docker-compose file just run this command: docker-compose up
+With this the compose container will be created - after that initialize the database SQL Server and you should be good to go!
 
 Note: Remember to use dbForge database managing tool for the SQL Server to use the scrpit:
 ![image](https://github.com/Alex120gb/BookstoreApi/assets/93439743/45ca098e-11f4-4270-adf7-e71bdb875741)
