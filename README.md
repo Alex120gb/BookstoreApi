@@ -5,8 +5,8 @@ To use it you have to consider a few things:
 1) If you use the docker-compose file that I will provide within the BookstoreWebApp github, you will also need to create the database - I will provide an sql script which not only contains the creation of the database, but of course also the tables AND some data to use!
 
 Also before running the docker you will have to download my two repositories from docker 
-i) Api: docker pull alexisk120/bookapi
-ii) WebApp: docker pull alexisk120/bookwebapp
+1) Api: docker pull alexisk120/bookapi
+2) WebApp: docker pull alexisk120/bookwebapp
 Once you pull this two repositories in your docker desktop app, feel free to run the docker-compose file!
 (Again please dont forget for the data or else you will not be able to properly use the api and webapp)
 
