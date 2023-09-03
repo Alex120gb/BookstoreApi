@@ -17,7 +17,7 @@ namespace BookstoreSdk.Services
             _httpClient.BaseAddress = new Uri(apiUrl);
         }
 
-        public async Task<List<SdkGetUpdateBooksModel>> GetBooks(string bearerToken)
+        public async Task<SdkResponse<List<SdkGetUpdateBooksModel>>> GetBooks(string bearerToken)
         {
             try
             {
@@ -27,7 +27,7 @@ namespace BookstoreSdk.Services
                 response.EnsureSuccessStatusCode(); 
 
                 string content = await response.Content.ReadAsStringAsync();
-                List<SdkGetUpdateBooksModel> result = JsonConvert.DeserializeObject<List<SdkGetUpdateBooksModel>>(content);
+                SdkResponse<List<SdkGetUpdateBooksModel>> result = JsonConvert.DeserializeObject<SdkResponse<List<SdkGetUpdateBooksModel>>>(content);
 
                 return result;
             }

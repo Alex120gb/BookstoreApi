@@ -13,7 +13,7 @@ namespace BookstoreSdk.Clients
             _clientBookService = clientBookService;
         }
 
-        public async Task<List<SdkGetUpdateBooksModel>> GetBooks(string bearerToken)
+        public async Task<SdkResponse<List<SdkGetUpdateBooksModel>>> GetBooks(string bearerToken)
         {
             return await _clientBookService.GetBooks(bearerToken);
         }

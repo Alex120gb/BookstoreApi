@@ -19,6 +19,15 @@ namespace BookstoreApi.Services
         {
             try
             {
+                if (request == null)
+                {
+                    return new Response<int>() 
+                    { 
+                        IsSuccessful = false, 
+                        Value = 0 
+                    };
+                }
+
                 return await _userRepositories.RegisterUser(request);
             }
             catch (Exception ex)
@@ -37,6 +46,15 @@ namespace BookstoreApi.Services
         {
             try
             {
+                if (request == null)
+                {
+                    return new Response<string>() 
+                    { 
+                        IsSuccessful = false, 
+                        Value = null 
+                    };
+                }
+
                 return await _userRepositories.Login(request);
             }
             catch (Exception ex)

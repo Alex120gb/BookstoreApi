@@ -25,7 +25,7 @@ namespace BookstoreApi.Tests.Unit.BookService
         public void GetBooks_Success()
         {
             // Arrange
-            var books = new List<GetUpdateBooksModel>();
+            var books = new Response<List<GetUpdateBooksModel>>();
             _bookRepositories.Setup(x => x.GetBooks())
                 .ReturnsAsync(books)
                 .Verifiable();
@@ -56,16 +56,39 @@ namespace BookstoreApi.Tests.Unit.BookService
         public void AddBooks_Success()
         {
             // Arrange
-            var response = new Response<int>() { IsSuccessful = true};
+            var request = new AddBooksModel()
+            {
+                Title = "Test_Title",
+                Author = "Test_Author",
+                PublicationYear = "2023",
+                Isbn = "ISBN_Number"
+            };
+
+            var response = new Response<int>() 
+            { 
+                IsSuccessful = true 
+            };
+
             _bookRepositories.Setup(x => x.AddBooks(It.IsAny<AddBooksModel>()))
                 .ReturnsAsync(response)
                 .Verifiable();
 
             // Act
-            var result = _sut.AddBooks(It.IsAny<AddBooksModel>()).Result;
+            var result = _sut.AddBooks(request).Result;
 
             // Assert
             Assert.IsTrue(result.IsSuccessful == true);
+            Mock.Verify();
+        }
+
+        [Test]
+        public void AddBooks_Faill_NullRequest()
+        {
+            // Arrange & Act
+            var result = _sut.AddBooks(It.IsAny<AddBooksModel>()).Result;
+
+            // Assert
+            Assert.IsTrue(result.IsSuccessful == false);
             Mock.Verify();
         }
 
@@ -87,16 +110,39 @@ namespace BookstoreApi.Tests.Unit.BookService
         public void UpdateBook_Success()
         {
             // Arrange
-            var response = new Response<int>() { IsSuccessful = true };
+            var request = new GetUpdateBooksModel() 
+            {
+                Title = "Test_Title",
+                Author = "Test_Author",
+                PublicationYear = "2023",
+                Isbn = "ISBN_Number"
+            };
+
+            var response = new Response<int>() 
+            { 
+                IsSuccessful = true 
+            };
+
             _bookRepositories.Setup(x => x.UpdateBook(It.IsAny<GetUpdateBooksModel>()))
                 .ReturnsAsync(response)
                 .Verifiable();
 
             // Act
-            var result = _sut.UpdateBook(It.IsAny<GetUpdateBooksModel>()).Result;
+            var result = _sut.UpdateBook(request).Result;
 
             // Assert
             Assert.IsTrue(result.IsSuccessful == true);
+            Mock.Verify();
+        }
+
+        [Test]
+        public void UpdateBook_Faill_NullRequest()
+        {
+            // Arrange & Act
+            var result = _sut.UpdateBook(It.IsAny<GetUpdateBooksModel>()).Result;
+
+            // Assert
+            Assert.IsTrue(result.IsSuccessful == false);
             Mock.Verify();
         }
 

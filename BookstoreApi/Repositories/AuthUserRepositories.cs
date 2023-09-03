@@ -1,7 +1,5 @@
-﻿using AutoMapper;
-using BookstoreApi.Common;
+﻿using BookstoreApi.Common;
 using BookstoreApi.Repositories.Interface;
-using BookstoreApi.Services.Interfaces;
 using BookstoreApi.TableDbContext;
 using Microsoft.EntityFrameworkCore;
 

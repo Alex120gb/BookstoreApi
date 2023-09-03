@@ -17,7 +17,7 @@ namespace BookstoreApi.Services
             _logger = logger;
         }
 
-        public async Task<List<GetUpdateBooksModel>> GetBooks()
+        public async Task<Response<List<GetUpdateBooksModel>>> GetBooks()
         {
             try
             {
@@ -26,7 +26,12 @@ namespace BookstoreApi.Services
             catch (Exception ex)
             {
                 _logger.LogError(ex, "There was an error during GetBooks");
-                return null;
+                return new Response<List<GetUpdateBooksModel>>
+                {
+                    IsSuccessful = false,
+                    Value = null,
+                    Message = ex.Message
+                };
             }
         }
 
@@ -34,6 +39,15 @@ namespace BookstoreApi.Services
         {
             try
             {
+                if (request == null)
+                {
+                    return new Response<int>() 
+                    { 
+                        IsSuccessful = false, 
+                        Value = 0 
+                    };
+                }
+
                 return await _bookRepositories.AddBooks(request);
             }
             catch (Exception ex)
@@ -52,6 +66,15 @@ namespace BookstoreApi.Services
         {
             try
             {
+                if (request.Id < 0 || request == null)
+                {
+                    return new Response<int>() 
+                    { 
+                        IsSuccessful = false, 
+                        Value = 0 
+                    };
+                }
+
                 return await _bookRepositories.UpdateBook(request);
             }
             catch (Exception ex)

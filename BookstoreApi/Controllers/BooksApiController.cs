@@ -24,7 +24,7 @@ namespace BookstoreApi.Controllers
         }
 
         [HttpGet("GetAllBooks")]
-        public async Task<List<GetUpdateBooksModel>> GetBooks()
+        public async Task<Response<List<GetUpdateBooksModel>>> GetBooks()
         {
             _logger.LogInformation("Getbooks method was called");
 

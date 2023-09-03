@@ -29,7 +29,7 @@ namespace BookstoreApi.Tests.Integration.SdkClients
 
             // Assert
             Assert.NotNull(response);
-            Assert.IsNotEmpty(response);
+            Assert.IsNotEmpty(response.Value);
         }
 
         [Test]

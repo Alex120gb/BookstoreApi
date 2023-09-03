@@ -25,16 +25,38 @@ namespace BookstoreApi.Tests.Unit.UserService
         public void RegisterUser_Success()
         {
             // Arrange
-            var response = new Response<int>() { IsSuccessful = true };
+            var request = new RegisterUserModel() 
+            { 
+                Username = "Test_Name",
+                Email = "Random@Email",
+                Password = "test"
+            };
+
+            var response = new Response<int>() 
+            { 
+                IsSuccessful = true 
+            };
+
             _userRepositories.Setup(x => x.RegisterUser(It.IsAny<RegisterUserModel>()))
                 .ReturnsAsync(response)
                 .Verifiable();
 
             // Act
-            var result = _sut.RegisterUser(It.IsAny<RegisterUserModel>()).Result;
+            var result = _sut.RegisterUser(request).Result;
 
             // Assert
             Assert.IsTrue(result.IsSuccessful == true);
+            Mock.Verify();
+        }
+
+        [Test]
+        public void RegisterUser_Fail_NullRequest()
+        {
+            // Arrange & Act
+            var result = _sut.RegisterUser(It.IsAny<RegisterUserModel>()).Result;
+
+            // Assert
+            Assert.IsTrue(result.IsSuccessful == false);
             Mock.Verify();
         }
 
@@ -53,19 +75,40 @@ namespace BookstoreApi.Tests.Unit.UserService
         }
 
         [Test]
-        public void RLogin_Success()
+        public void Login_Success()
         {
             // Arrange
-            var response = new Response<string>() { IsSuccessful = true };
+            var request = new LoginRequestModel()
+            {
+                Username = "Test_Name",
+                Password = "test"
+            };  
+
+            var response = new Response<string>() 
+            { 
+                IsSuccessful = true 
+            };
+
             _userRepositories.Setup(x => x.Login(It.IsAny<LoginRequestModel>()))
                 .ReturnsAsync(response)
                 .Verifiable();
 
             // Act
-            var result = _sut.Login(It.IsAny<LoginRequestModel>()).Result;
+            var result = _sut.Login(request).Result;
 
             // Assert
             Assert.IsTrue(result.IsSuccessful == true);
+            Mock.Verify();
+        }
+
+        [Test]
+        public void Login_Fail_NullRequest()
+        {
+            // Arrange & Act
+            var result = _sut.Login(It.IsAny<LoginRequestModel>()).Result;
+
+            // Assert
+            Assert.IsTrue(result.IsSuccessful == false);
             Mock.Verify();
         }
 
