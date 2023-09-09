@@ -49,7 +49,7 @@ namespace BookstoreApi
             var dbHost = Environment.GetEnvironmentVariable("DB_HOST");
             var dbName = Environment.GetEnvironmentVariable("DB_NAME");
             var dbPassword = Environment.GetEnvironmentVariable("DB_SA_PASSWORD");
-            var connectionString = $"Server=127.0.0.1,1433;Database=Bookstore;User=sa;Password=B@@k2toR3S3rVer;TrustServerCertificate=true;";
+            var connectionString = $"Server={dbHost},1433;Database={dbName};User=sa;Password={dbPassword};TrustServerCertificate=true;";
             services.AddDbContext<BookDbContext>(options => options.UseSqlServer(connectionString));
             services.AddDbContext<UserDbContext>(options => options.UseSqlServer(connectionString));
 
