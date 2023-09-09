@@ -18,7 +18,7 @@ services:
 
   bookstoreapi:
     container_name: bookstore-api
-    image: alexisk120/bookapi:1.00
+    image: alexisk120/bookapi:2.00
     ports:
         - 8080:80
     depends_on:
@@ -32,7 +32,7 @@ services:
 
   bookstorewebapp:
     container_name: bookstore-web
-    image: alexisk120/bookwebapp:1.00
+    image: alexisk120/bookwebapp:2.00
     networks:
         - bookstore-app
     ports:
